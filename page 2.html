@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Cards</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .modal {
+      display: none;
+    }
+  </style>
+</head>
+<body class="p-8">
+  <h1 class="text-2xl mb-4">Product Cards</h1>
+
+  <div class="mb-4">
+    <input type="text" id="searchInput" class="border border-gray-400 rounded py-2 px-4 w-64" placeholder="Search products">
+  </div>
+
+  <div class="grid grid-cols-3 gap-4" id="productGrid">
+    <!-- Product cards will be dynamically added here -->
+  </div>
+
+  <button id="addProductButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Add Product</button>
+
+  <!-- Modal for adding new product -->
+  <div id="addProductModal" class="modal fixed inset-0 flex items-center justify-center">
+    <div class="modal-overlay absolute inset-0 bg-black opacity-50"></div>
+    <div class="modal-content bg-white w-1/2 p-4">
+      <h2 class="text-xl mb-4">Add New Product</h2>
+      <form id="addProductForm">
+        <div class="mb-4">
+          <label for="productName" class="block font-bold">Product Name:</label>
+          <input type="text" id="productName" class="border border-gray-400 rounded py-2 px-4 w-64">
+        </div>
+        <div class="mb-4">
+          <label for="productPrice" class="block font-bold">Product Price:</label>
+          <input type="number" id="productPrice" class="border border-gray-400 rounded py-2 px-4 w-64">
+        </div>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add</button>
+        <button id="closeModalButton" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-2">Close</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Mock product data
+    const products = [
+      { name: 'Product 1',
+      image: 'images2'.jpg ,price : 10 },
+      { name: 'Product 2', price: 20 },
+      { name: 'Product 3', price: 30 },
+      { name: 'Product 4', price: 40 },
+      { name: 'Product 5', price: 50 },
+      { name: 'Product 6', price: 60 },
+      { name: 'Product 7', price: 70 },
+      { name: 'Product 8', price: 80 },
+      { name: 'Product 9', price: 90 },
+    ];
+
+    const productGrid = document.getElementById('productGrid');
+    const searchInput = document.getElementById('searchInput');
+    const addProductButton = document.getElementById('addProductButton');
+    const addProductModal = document.getElementById('addProductModal');
+    const addProductForm = document.getElementById('addProductForm');
+    const productNameInput = document.getElementById('productName');
+    const productPriceInput = document.getElementById('productPrice');
+    const closeModalButton = document.getElementById('closeModalButton');
+
+    // Function to generate product cards
+    function generateProductCards(products) {
+      productGrid.innerHTML = '';
+
+      products.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'bg-gray-100 p-4';
+
+        const name = document.createElement('h3');
+        name.className = 'text-lg font-bold';
+        name.textContent = product.name;
+
+        const price = document.createElement('p');
+        price.className = 'text-gray-500';
+        price.textContent = `$${product.price}`;
+
+        card.appendChild(name);
+        card.appendChild(price);
+
+        productGrid.appendChild(card);
+      });
+    }
+
+    // Function to filter products based on search input
+    function filterProducts(searchTerm) {
+      const filteredProducts = products.filter(product => product.name.toLowerCase().includes(searchTerm.toLowerCase()));
+      generateProductCards(filteredProducts);
+    }
+
+    // Event listener for search input
+    searchInput.addEventListener('input', function (event) {
+      const searchTerm = event.target.value;
+      filterProducts(searchTerm);
+    });
+
+    // Event listener for add product button
+    addProductButton.addEventListener('click', function () {
+      addProductModal.style.display = 'flex';
+    });
+
+    // Event listener for close modal button
+    closeModalButton.addEventListener('click', function () {
+      addProductModal.style.display = 'none';
+      addProductForm.reset();
+    });
+
+    // Event listener for add product form submission
+    addProductForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const newProduct = {
+        name: productNameInput.value,
+        price: parseInt(productPriceInput.value),
+      };
+
+      products.push(newProduct);
+      generateProductCards(products);
+
+      addProductModal.style.display = 'none';
+      addProductForm.reset();
+    });
+
+    // Generate initial product cards
+    generateProductCards(products);
+  </script>
+</body>
+</html>
