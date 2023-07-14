@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.7/dist/tailwind.min.css" rel="stylesheet">
+  <title>Product Card Grid</title>
+  <style>
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container lg-auto p-4">
+    <h1 class="text-2xl text-center font-bold mb-4">Iphones</h1>
+
+    <div class="mb-4">
+      <input id="searchInput" type="text" placeholder="Search cards" class="border border-gray-300 w-full px-4 py-3 rounded">
+    </div>
+
+    <div class="card-grid" id="cardGrid">
+      <!-- Cards will be dynamically added here -->
+    </div>
+
+    <div class="mt-4">
+      <button id="addCardButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Card</button>
+    </div>
+  </div>
+
+  <script>
+    // Sample data for product cards
+    const products = [
+      {
+        name: "Product 1",
+        image: "images5.jpg",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      },
+      {
+        name: "Product 2",
+        image: "images10.jpg",
+        description: "Nullam hendrerit odio sed justo consequat, non fringilla lectus maximus."
+      },
+      {
+        name: "Product 3",
+        image: "images3.jpg",
+        description: "Nullam hendrerit odio sed justo consequat, non fringilla lectus maximus."
+      },
+      {
+        name: "Product 4",
+        image: "images4.jpg",
+        description: "Nullam hendrerit odio sed justo consequat, non fringilla lectus maximus."
+      },
+      {
+        name: "Product 5",
+        image: "images6.jpg",
+        description: "Nullam hendrerit odio sed justo consequat, non fringilla lectus maximus."
+      },
+      {
+        name: "Product 6",
+        image: "images9.jpg",
+        description: "Nullam hendrerit odio sed justo consequat, non fringilla lectus maximus."
+      },
+      {
+        name: "Product 7",
+        image: "images8.jpg",
+        description: "Nullam hendrerit odio sed justo consequat, non fringilla lectus maximus."
+      },
+      // Add more products as needed
+    ];
+
+    // Function to create a product card
+    function createCard(product) {
+      const card = document.createElement("div");
+      card.classList.add("card");
+
+      const image = document.createElement("img");
+      image.src = product.image;
+      image.alt = product.name;
+      image.classList.add("mb-2");
+      card.appendChild(image);
+
+      const title = document.createElement("h3");
+      title.textContent = product.name;
+      title.classList.add("text-lg", "font-bold", "mb-2");
+      card.appendChild(title);
+
+      const description = document.createElement("p");
+      description.textContent = product.description;
+      card.appendChild(description);
+
+      return card;
+    }
+
+    // Function to render product cards
+    function renderCards(filter) {
+      const cardGrid = document.getElementById("cardGrid");
+      cardGrid.innerHTML = "";
+
+      const filteredProducts = products.filter(product =>
+        product.name.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      filteredProducts.forEach(product => {
+        const card = createCard(product);
+        cardGrid.appendChild(card);
+      });
+    }
+
+    // Event listener for search input
+    document.getElementById("searchInput").addEventListener("input", function(event) {
+      const filter = event.target.value;
+      renderCards(filter);
+    });
+
+    // Event listener for add card button
+    document.getElementById("addCardButton").addEventListener("click", function() {
+      const newProduct = {
+        name: "New Product",
+        image: "placeholder.jpg",
+        description: "This is a new product."
+      };
+
+      products.push(newProduct);
+      renderCards("");
+    });
+
+    // Initial rendering of cards
+    renderCards("");
+  </script>
+</body>
+</html>
